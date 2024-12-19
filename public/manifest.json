@@ -1,0 +1,15 @@
+{
+    "name": "Sekure Password",
+    "description": "Manage passwords online",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "contextMenus",
+        "tabs",
+        "alarms",
+        "clipboardWrite"
+    ]
+}
