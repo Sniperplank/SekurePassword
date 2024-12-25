@@ -1,4 +1,5 @@
 import { Box, Stack, Typography, Button, Input } from '@mui/material'
+import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,8 +17,10 @@ function InitialPopup() {
 
     const signup = async (formData, setError) => {
         try {
-            const { data } = await axios.post('http://localhost:5000/user/signup', formData)
-            console.log(JSON.stringify({ ...data }))
+            const data = await axios.post('http://localhost:5000/user/signup', formData)
+            // console.log(JSON.stringify({ ...data }))
+            console.log(data)
+            navigate('/list')
         } catch (error) {
             setError(error.response.data.message)
             console.log(error)
@@ -26,8 +29,10 @@ function InitialPopup() {
 
     const signin = async (formData, setError) => {
         try {
-            const { data } = await axios.post('http://localhost:5000/user/signin', formData)
-            console.log(JSON.stringify({ ...data }))
+            const data = await axios.post('http://localhost:5000/user/signin', formData)
+            // console.log(JSON.stringify({ ...data }))
+            console.log(data)
+            navigate('/list')
         } catch (error) {
             setError(error.response.data.message)
             console.log(error)
@@ -37,9 +42,9 @@ function InitialPopup() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (isSignup) {
-            signup(formData, navigate, setError)
+            signup(formData, setError)
         } else {
-            signin(formData, navigate, setError)
+            signin(formData, setError)
         }
     }
 
