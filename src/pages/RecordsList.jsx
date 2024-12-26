@@ -16,7 +16,7 @@ function RecordsList() {
   }
 
   const handleAddRecord = () => {
-    navigate('/add')
+    navigate('/add', { state: { user: user } })
   }
 
   const handleRecordDetails = (record) => {
