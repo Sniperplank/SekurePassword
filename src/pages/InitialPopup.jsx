@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, Button, Input, OutlinedInput } from '@mui/material'
+import { Box, Stack, Typography, Button, OutlinedInput } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -15,35 +15,20 @@ function InitialPopup() {
         setIsSignup((prev) => !prev)
     }
 
-    const signup = async (formData, setError) => {
+    const handleAuth = async (formData, isSignup) => {
         try {
-            const data = await axios.post('http://localhost:5000/user/signup', formData)
-            console.log(data)
-            navigate('/list', { state: { user: data.data } })
-        } catch (error) {
-            setError(error.response.data.message)
-            console.log(error)
-        }
-    }
+            const endpoint = isSignup ? '/user/signup' : '/user/signin'
+            const response = await axios.post(`http://localhost:5000${endpoint}`, formData)
 
-    const signin = async (formData, setError) => {
-        try {
-            const data = await axios.post('http://localhost:5000/user/signin', formData)
-            console.log(data)
-            navigate('/list', { state: { user: data.data } })
+            navigate('/list', { state: { user: response.data } })
         } catch (error) {
-            setError(error.response.data.message)
-            console.log(error)
+            setError(error.response?.data?.message || 'An error occurred')
         }
-    }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (isSignup) {
-            signup(formData, setError)
-        } else {
-            signin(formData, setError)
-        }
+        handleAuth(formData, isSignup)
     }
 
     const handleChange = (e) => {
@@ -65,8 +50,8 @@ function InitialPopup() {
                             )
                         }
                         <OutlinedInput variant='outlined' name='email' label='Email' onChange={handleChange} type='email' />
-                        <OutlinedInput variant='outlined' name='password' label='Password' onChange={handleChange} type='password' />
-                        {isSignup && <OutlinedInput variant='outlined' name='confirmPassword' label='Confirm Password' onChange={handleChange} type='password' />}
+                        <OutlinedInput variant='outlined' name='password' label='Main Password' onChange={handleChange} type='password' />
+                        {isSignup && <OutlinedInput variant='outlined' name='confirmPassword' label='Confirm Main Password' onChange={handleChange} type='password' />}
                         <Typography variant='h6' color='error'>{error}</Typography>
                         <Button type='submit' fullWidth variant='contained' color='primary'>
                             {isSignup ? 'Sign Up' : 'Sign In'}
