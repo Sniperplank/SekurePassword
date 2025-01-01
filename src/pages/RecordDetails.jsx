@@ -9,6 +9,8 @@ function RecordDetails() {
         <div>
             RecordDetails
             {record.title}
+            {record.login}
+            {record.password}
         </div>
     )
 }
