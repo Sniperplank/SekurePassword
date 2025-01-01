@@ -40,17 +40,15 @@ function RecordsList() {
         !records.length ?
           <CircularProgress size={50} />
           : (
-            <>
+            <Stack width='100%' spacing={6} sx={{ marginTop: 10 }}>
               {
                 Object.entries(records).map(([key, value]) => {
                   return (
-                    <Stack key={key} width='100%' spacing={6} sx={{ marginTop: 10 }}>
-                      <Button onClick={() => handleRecordDetails(value)}>{value.title}</Button>
-                    </Stack>
+                    <Button key={key} onClick={() => handleRecordDetails(value)}>{value.title}</Button>
                   )
                 })
               }
-            </>
+            </Stack>
           )
       }
     </Box>

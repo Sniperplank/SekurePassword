@@ -1,7 +1,10 @@
-import { Box, Stack, Typography, Button, OutlinedInput } from '@mui/material'
+import { Box, Stack, Typography, Button } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { CardBox } from '../StyledComponents/CardBox'
+import { StyledButton } from '../StyledComponents/StyledButton'
+import { StyledInput } from '../StyledComponents/StyledInput'
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 
@@ -36,32 +39,32 @@ function InitialPopup() {
     }
 
     return (
-        <Box flex={5} display='flex' justifyContent='center' alignItems='center' padding={10}>
-            <Box sx={{ minWidth: { xs: 0, sm: 400 } }}>
+        <Box flex={5} display='flex' justifyContent='center' alignItems='center'>
+            <CardBox sx={{ minWidth: { xs: 0, sm: 400 } }}>
                 <Typography variant='h5' paddingBottom={3}>{isSignup ? 'Sign up' : 'Sign In'}</Typography>
                 <form onSubmit={handleSubmit}>
                     <Stack spacing={3}>
                         {
                             isSignup && (
                                 <Stack direction='row' spacing={2}>
-                                    <OutlinedInput variant='outlined' name='firstName' label='First Name' onChange={handleChange} width='50%' autoFocus />
-                                    <OutlinedInput variant='outlined' name='lastName' label='Last Name' onChange={handleChange} width='50%' />
+                                    <StyledInput variant='outlined' name='firstName' label='First Name' onChange={handleChange} width='50%' autoFocus />
+                                    <StyledInput variant='outlined' name='lastName' label='Last Name' onChange={handleChange} width='50%' />
                                 </Stack>
                             )
                         }
-                        <OutlinedInput variant='outlined' name='email' label='Email' onChange={handleChange} type='email' />
-                        <OutlinedInput variant='outlined' name='password' label='Main Password' onChange={handleChange} type='password' />
-                        {isSignup && <OutlinedInput variant='outlined' name='confirmPassword' label='Confirm Main Password' onChange={handleChange} type='password' />}
+                        <StyledInput variant='outlined' name='email' label='Email' onChange={handleChange} type='email' />
+                        <StyledInput variant='outlined' name='password' label='Main Password' onChange={handleChange} type='password' />
+                        {isSignup && <StyledInput variant='outlined' name='confirmPassword' label='Confirm Main Password' onChange={handleChange} type='password' />}
                         <Typography variant='h6' color='error'>{error}</Typography>
-                        <Button type='submit' fullWidth variant='contained' color='primary'>
+                        <StyledButton type='submit' fullWidth variant='contained' color='primary'>
                             {isSignup ? 'Sign Up' : 'Sign In'}
-                        </Button>
+                        </StyledButton>
                         <Button onClick={switchMode}>
                             {isSignup ? 'Already have an account? Sign in' : 'Dont have an account? Sign up'}
                         </Button>
                     </Stack>
                 </form>
-            </Box>
+            </CardBox>
         </Box>
     )
 }
