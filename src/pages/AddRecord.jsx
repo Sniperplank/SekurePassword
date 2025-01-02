@@ -1,24 +1,24 @@
 import { Button, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { StyledInput } from '../StyledComponents/StyledInput'
 import { StyledButton } from '../StyledComponents/StyledButton'
+import { useAuth } from '../contexts/AuthContext'
 
 function AddRecord() {
-    const location = useLocation()
-    const { user } = location.state
+    const { user } = useAuth()
     const [recordDetails, setRecordDetails] = useState({ title: '', login: '', password: '', login_url: '', userEmail: user.result.email })
     const navigate = useNavigate()
 
     const handleAddRecord = async () => {
         await axios.post('http://localhost:5000/record', recordDetails)
         console.log('record added')
-        navigate('/list', { state: { user: user }})
+        navigate('/list')
     }
 
     const goBack = async () => {
-        navigate('/list', { state: { user: user }})
+        navigate('/list')
     }
 
     const handleChange = (e) => {

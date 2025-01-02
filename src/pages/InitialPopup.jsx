@@ -1,10 +1,10 @@
 import { Box, Stack, Typography, Button } from '@mui/material'
-import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CardBox } from '../StyledComponents/CardBox'
 import { StyledButton } from '../StyledComponents/StyledButton'
 import { StyledInput } from '../StyledComponents/StyledInput'
+import { signin, signup } from '../actions/auth'
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 
@@ -14,24 +14,27 @@ function InitialPopup() {
     const [error, setError] = useState('')
     const navigate = useNavigate()
 
+    // Check for existing user profile on component mount
+    useEffect(() => {
+        chrome.storage.local.get('profile', (result) => {
+            if (result.profile) {
+                console.log('User already logged in:', result.profile)
+                navigate('/list') // Navigate to the /list page
+            }
+        })
+    }, [navigate])
+
     const switchMode = () => {
         setIsSignup((prev) => !prev)
     }
 
-    const handleAuth = async (formData, isSignup) => {
-        try {
-            const endpoint = isSignup ? '/user/signup' : '/user/signin'
-            const response = await axios.post(`http://localhost:5000${endpoint}`, formData)
-
-            navigate('/list', { state: { user: response.data } })
-        } catch (error) {
-            setError(error.response?.data?.message || 'An error occurred')
-        }
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault()
-        handleAuth(formData, isSignup)
+        if (isSignup) {
+            signup(formData, navigate, setError)
+        } else {
+            signin(formData, navigate, setError)
+        }
     }
 
     const handleChange = (e) => {

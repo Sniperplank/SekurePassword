@@ -10,6 +10,7 @@
         "contextMenus",
         "tabs",
         "alarms",
-        "clipboardWrite"
+        "clipboardWrite",
+        "storage"
     ]
 }
