@@ -38,6 +38,15 @@ function RecordDetails() {
         }
     }
 
+    const deleteRecord = async () => {
+        try {
+            await axios.delete('http://localhost:5000/record?id=' + record._id)
+            navigate('/list')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         const hasChanges = JSON.stringify(updatedRecord) !== JSON.stringify(initialRecord.current);
         setIsChanged(hasChanges);
@@ -62,6 +71,7 @@ function RecordDetails() {
                     </Stack>
                 )
             }
+            <Button onClick={deleteRecord} sx={{ width: '50%', alignSelf: 'center' }} color='error'>Delete</Button>
             <Button onClick={goBack} sx={{ width: '50%', alignSelf: 'center' }}>Back</Button>
         </Stack>
     )
