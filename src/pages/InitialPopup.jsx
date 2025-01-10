@@ -14,6 +14,9 @@ function InitialPopup() {
     const [error, setError] = useState('')
     const navigate = useNavigate()
 
+
+    // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
+
     // Check for existing user profile on component mount
     useEffect(() => {
         chrome.storage.local.get('profile', (result) => {

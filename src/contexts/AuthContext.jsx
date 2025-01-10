@@ -7,7 +7,10 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+
+    // <--------------------------COMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
     // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
+
     const [user, setUser] = useState(null)
 
     useEffect(() => {

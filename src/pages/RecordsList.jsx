@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Divider, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -66,6 +66,7 @@ function RecordsList() {
     });
   };
 
+  // <--------------------------COMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
   // useEffect(() => {
   //   setUser(JSON.parse(localStorage.getItem('profile')))
   // }, [])
@@ -79,6 +80,9 @@ function RecordsList() {
     }
     getRecords()
   }, [user, update, location])
+
+
+  // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
 
   // Monitor active URL changes
   useEffect(() => {
@@ -119,28 +123,37 @@ function RecordsList() {
         <AddBoxIcon onClick={handleAddRecord} color='primary' fontSize='large' />
       </Stack>
       <StyledInput variant='outlined' label={'Search ' + records.length + ' records by title'} type='search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-      <Typography variant="body2">Active URL: {currentURL || 'No active URL detected'}</Typography>
+      <Typography variant="body2">{matchingRecords.length ? `${matchingRecords.length} matching ${matchingRecords.length > 1 ? 'records' : 'record'} found` : 'No matching records found'}</Typography>
       {
         matchingRecords.length > 0 && (
-          <Typography variant="body2">
-            {matchingRecords.length} matching record(s) found for the current URL!
-          </Typography>
+          <Stack spacing={3}>
+            {
+              matchingRecords.map(([key, value]) => {
+                return (
+                  <CardBox component={Button} onClick={() => handleRecordDetails(value)} sx={{ paddingTop: 2, paddingBottom: 2, '&:hover': { color: 'primary.main' }, textTransform: 'none' }} key={key}>{value.title.length > 25 ? `${value.title.slice(0, 25)}...` : value.title}</CardBox>
+                )
+              })
+            }
+          </Stack>
         )
       }
+      <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
       {
         !records.length ?
-          <CircularProgress size={50} />
-          : (
-            <Stack spacing={3} sx={{ marginTop: 10 }}>
-              {
-                filteredRecords.map(([key, value]) => {
-                  return (
-                    <CardBox component={Button} onClick={() => handleRecordDetails(value)} sx={{ paddingTop: 2, paddingBottom: 2, '&:hover': { color: 'primary.main' } }} key={key}>{value.title}</CardBox>
-                  )
-                })
-              }
-            </Stack>
-          )
+          <CircularProgress size={50} sx={{ alignSelf: 'center' }} />
+          : records.length === 0 ?
+            <Typography variant="body2">You have no records saved</Typography>
+            : (
+              <Stack spacing={3} sx={{ marginTop: 10 }}>
+                {
+                  filteredRecords.map(([key, value]) => {
+                    return (
+                      <CardBox component={Button} onClick={() => handleRecordDetails(value)} sx={{ paddingTop: 2, paddingBottom: 2, '&:hover': { color: 'primary.main' }, textTransform: 'none' }} key={key}>{value.title.length > 25 ? `${value.title.slice(0, 25)}...` : value.title}</CardBox>
+                    )
+                  })
+                }
+              </Stack>
+            )
       }
     </Stack>
   )

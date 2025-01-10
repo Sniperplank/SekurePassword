@@ -13,6 +13,7 @@ function App() {
   const navigate = useNavigate()
   const location = useLocation()
 
+  // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
   useEffect(() => {
     chrome.storage.local.get("profile", (result) => {
       if (chrome.runtime.lastError) {
