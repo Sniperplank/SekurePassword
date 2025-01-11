@@ -3,18 +3,18 @@ import { createTheme } from "@mui/material";
 export const theme = createTheme({
     palette: {
         primary: {
-            main: "#facc15",
+            main: "#a5c5d7",
             light: "#ffb74d"
         },
         secondary: {
-            main: "#262626",
+            main: "#32376f",
             light: "#302e28"
         },
         buttonText: {
             main: "#212121"
         },
         text: {
-            main: '#b6b4b4',
+            main: '#eaf2f6',
             input: 'white'
         },
         body: {
