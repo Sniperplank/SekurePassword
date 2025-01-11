@@ -55,12 +55,12 @@ function RecordDetails() {
 
     return (
         <Stack spacing={5}>
-            <Typography variant='h4'>Edit Record Entry</Typography>
+            <Typography variant='h5' color='primary'>Edit Record Entry</Typography>
             <StyledInput variant='outlined' name='title' label='Title' defaultValue={record.title} onChange={handleChange} />
             <StyledInput variant='outlined' name='login' label='Login' defaultValue={record.login} onChange={handleChange} />
             <Stack direction='row' spacing={2}>
                 <StyledInput variant='outlined' name='password' label='Password' defaultValue={record.password} type={isHidden ? 'password' : 'text'} onChange={handleChange} />
-                {isHidden ? <VisibilityOffIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center' }} /> : <VisibilityIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center' }} />}
+                {isHidden ? <VisibilityOffIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} /> : <VisibilityIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />}
             </Stack>
             <StyledInput variant='outlined' name='login_url' label='URL' defaultValue={record.login_url} onChange={handleChange} />
             {

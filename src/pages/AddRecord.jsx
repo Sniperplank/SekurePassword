@@ -27,7 +27,7 @@ function AddRecord() {
 
     return (
         <Stack spacing={4}>
-            <Typography variant='h4'>New Record Entry</Typography>
+            <Typography variant='h5' color='primary'>New Record Entry</Typography>
             <Stack spacing={3}>
                 <StyledInput variant='outlined' name='title' label='Title' onChange={handleChange} />
                 <StyledInput variant='outlined' name='login' label='Login' onChange={handleChange} />
