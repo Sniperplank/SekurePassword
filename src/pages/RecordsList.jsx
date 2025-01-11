@@ -116,11 +116,12 @@ function RecordsList() {
     <Stack spacing={4}>
       <Stack direction='row' justifyContent='space-between'>
         <Typography variant='h6' color='primary'>{user?.result.name}</Typography>
-        <Button color='error' onClick={logout} startIcon={<LogoutIcon />}>Logout</Button>
+        <LogoutIcon onClick={logout} color='error' fontSize='medium' sx={{ cursor: 'pointer' }} />
       </Stack>
+      <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
       <Stack direction='row' justifyContent='space-between'>
-        <Typography variant='h6' color='primary' textAlign='center'>Records List</Typography>
-        <AddBoxIcon onClick={handleAddRecord} color='primary' fontSize='large' />
+        <Typography variant='h6' color='primary' textAlign='center'>Your Records</Typography>
+        <AddBoxIcon onClick={handleAddRecord} color='primary' fontSize='large' sx={{ cursor: 'pointer' }} />
       </Stack>
       <StyledInput variant='outlined' label={'Search ' + records.length + ' records by title'} type='search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       <Typography variant="body2">{matchingRecords.length ? `${matchingRecords.length} matching ${matchingRecords.length > 1 ? 'records' : 'record'} found` : 'No matching records found'}</Typography>
