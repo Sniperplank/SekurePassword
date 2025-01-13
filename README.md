@@ -1,3 +1,3 @@
 # Sekure Password
 
-### An online password manager
+### A chrome extension password manager
