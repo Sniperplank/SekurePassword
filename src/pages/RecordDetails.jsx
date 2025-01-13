@@ -50,18 +50,18 @@ function RecordDetails() {
     // Function to inject into the page to handle password fields
     const autoFillCredentials = (credentialsString) => {
 
-        const { username, password } = JSON.parse(credentialsString);
+        const { username, password } = JSON.parse(credentialsString)
         // Find all input fields
-        const inputs = document.querySelectorAll('input');
+        const inputs = document.querySelectorAll('input')
 
         // Track if we found and filled the fields
-        let foundUsername = false;
-        let foundPassword = false;
+        let foundUsername = false
+        let foundPassword = false
 
         inputs.forEach(input => {
             // Get computed style to check visibility
-            const style = window.getComputedStyle(input);
-            if (style.display === 'none' || style.visibility === 'hidden') return;
+            const style = window.getComputedStyle(input)
+            if (style.display === 'none' || style.visibility === 'hidden') return
 
             // Username field detection - check multiple common attributes
             if (!foundUsername && (
@@ -73,44 +73,44 @@ function RecordDetails() {
                 input.id?.toLowerCase().includes('email')
             )) {
                 // Set value and dispatch events to trigger site's JavaScript
-                input.value = username;
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-                foundUsername = true;
+                input.value = username
+                input.dispatchEvent(new Event('input', { bubbles: true }))
+                input.dispatchEvent(new Event('change', { bubbles: true }))
+                foundUsername = true
             }
 
             // Password field detection
             if (!foundPassword && input.type === 'password') {
-                input.value = password;
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-                foundPassword = true;
+                input.value = password
+                input.dispatchEvent(new Event('input', { bubbles: true }))
+                input.dispatchEvent(new Event('change', { bubbles: true }))
+                foundPassword = true
             }
         });
 
-        return { foundUsername, foundPassword };
+        return { foundUsername, foundPassword }
     };
 
     // Add this function to your RecordsList component:
     const fillCredentials = async () => {
         try {
-            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
             const credentialsString = JSON.stringify({
                 username: record.login,
                 password: record.password
-            });
+            })
 
             const [{ result }] = await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: autoFillCredentials,
                 args: [credentialsString] // Pass credentials to the injected function
-            });
+            })
 
             if (result.foundUsername || result.foundPassword) {
-                console.log('Successfully filled credentials');
+                console.log('Successfully filled credentials')
             } else {
-                console.log('No matching fields found');
+                console.log('No matching fields found')
             }
 
         } catch (error) {
@@ -119,8 +119,8 @@ function RecordDetails() {
     };
 
     useEffect(() => {
-        const hasChanges = JSON.stringify(updatedRecord) !== JSON.stringify(initialRecord.current);
-        setIsChanged(hasChanges);
+        const hasChanges = JSON.stringify(updatedRecord) !== JSON.stringify(initialRecord.current)
+        setIsChanged(hasChanges)
     }, [updatedRecord])
 
 
