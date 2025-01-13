@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Divider, Stack, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { StyledInput } from '../StyledComponents/StyledInput'
@@ -126,11 +126,12 @@ function RecordDetails() {
 
     return (
         <Stack spacing={5}>
-            <Typography variant='h5' color='primary'>Edit Record Entry</Typography>
+            <Typography variant='h5' color='primary'>Edit Record</Typography>
+            <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
             <StyledInput variant='outlined' name='title' label='Title' defaultValue={record.title} onChange={handleChange} />
             <StyledInput variant='outlined' name='login' label='Login' defaultValue={record.login} onChange={handleChange} />
             <Stack direction='row' spacing={2}>
-                <StyledInput variant='outlined' name='password' label='Password' defaultValue={record.password} type={isHidden ? 'password' : 'text'} onChange={handleChange} />
+                <StyledInput variant='outlined' name='password' label='Password' defaultValue={record.password} type={isHidden ? 'password' : 'text'} onChange={handleChange} sx={{ width: '90%' }} />
                 {isHidden ? <VisibilityOffIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} /> : <VisibilityIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />}
             </Stack>
             <StyledInput variant='outlined' name='login_url' label='URL' defaultValue={record.login_url} onChange={handleChange} />
