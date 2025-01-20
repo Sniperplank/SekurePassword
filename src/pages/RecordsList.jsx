@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { CardBox } from '../StyledComponents/CardBox';
 import { StyledInput } from '../StyledComponents/StyledInput';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 function RecordsList() {
   const [records, setRecords] = useState({})
@@ -40,6 +41,77 @@ function RecordsList() {
       }
     })
   }
+
+  // Function to inject into the page to handle password fields
+  const autoFillCredentials = (credentialsString) => {
+
+    const { username, password } = JSON.parse(credentialsString)
+    // Find all input fields
+    const inputs = document.querySelectorAll('input')
+
+    // Track if we found and filled the fields
+    let foundUsername = false
+    let foundPassword = false
+
+    inputs.forEach(input => {
+      // Get computed style to check visibility
+      const style = window.getComputedStyle(input)
+      if (style.display === 'none' || style.visibility === 'hidden') return
+
+      // Username field detection - check multiple common attributes
+      if (!foundUsername && (
+        input.type === 'text' ||
+        input.type === 'email' ||
+        input.name?.toLowerCase().includes('user') ||
+        input.name?.toLowerCase().includes('email') ||
+        input.id?.toLowerCase().includes('user') ||
+        input.id?.toLowerCase().includes('email')
+      )) {
+        // Set value and dispatch events to trigger site's JavaScript
+        input.value = username
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+        input.dispatchEvent(new Event('change', { bubbles: true }))
+        foundUsername = true
+      }
+
+      // Password field detection
+      if (!foundPassword && input.type === 'password') {
+        input.value = password
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+        input.dispatchEvent(new Event('change', { bubbles: true }))
+        foundPassword = true
+      }
+    });
+
+    return { foundUsername, foundPassword }
+  };
+
+  // Add this function to your RecordsList component:
+  const fillCredentials = async (record) => {
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+
+      const credentialsString = JSON.stringify({
+        username: record.login,
+        password: record.password
+      })
+
+      const [{ result }] = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: autoFillCredentials,
+        args: [credentialsString] // Pass credentials to the injected function
+      })
+
+      if (result.foundUsername || result.foundPassword) {
+        console.log('Successfully filled credentials')
+      } else {
+        console.log('No matching fields found')
+      }
+
+    } catch (error) {
+      console.error('Error filling credentials:', error);
+    }
+  };
 
   const filteredRecords = Object.entries(records).filter(record => {
     return (
@@ -131,7 +203,12 @@ function RecordsList() {
             {
               matchingRecords.map(([key, value]) => {
                 return (
-                  <CardBox component={Button} onClick={() => handleRecordDetails(value)} sx={{ paddingTop: 2, paddingBottom: 2, '&:hover': { color: 'primary.main' }, textTransform: 'none' }} key={key}>{value.title.length > 25 ? `${value.title.slice(0, 25)}...` : value.title}</CardBox>
+                  <CardBox sx={{ paddingTop: 2, paddingBottom: 2, textTransform: 'none' }} key={key}>
+                    <Stack direction='row' spacing={2}>
+                      <Typography onClick={() => handleRecordDetails(value)} sx={{ '&:hover': { color: 'primary.main' }, cursor: 'pointer' }}>{value.title.length > 20 ? `${value.title.slice(0, 20)}...` : value.title}</Typography>
+                      <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />
+                    </Stack>
+                  </CardBox>
                 )
               })
             }
@@ -140,7 +217,7 @@ function RecordsList() {
       }
       <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
       {
-        !records.length ?
+        records === undefined || records === null ?
           <CircularProgress size={50} sx={{ alignSelf: 'center' }} />
           : records.length === 0 ?
             <Typography variant="body2">You have no records saved</Typography>
@@ -149,7 +226,12 @@ function RecordsList() {
                 {
                   filteredRecords.map(([key, value]) => {
                     return (
-                      <CardBox component={Button} onClick={() => handleRecordDetails(value)} sx={{ paddingTop: 2, paddingBottom: 2, '&:hover': { color: 'primary.main' }, textTransform: 'none' }} key={key}>{value.title.length > 25 ? `${value.title.slice(0, 25)}...` : value.title}</CardBox>
+                      <CardBox sx={{ paddingTop: 2, paddingBottom: 2, textTransform: 'none' }} key={key}>
+                        <Stack direction='row' spacing={2} justifyContent='space-between'>
+                          <Typography onClick={() => handleRecordDetails(value)} sx={{ '&:hover': { color: 'primary.main' }, cursor: 'pointer' }}>{value.title.length > 20 ? `${value.title.slice(0, 20)}...` : value.title}</Typography>
+                          <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />
+                        </Stack>
+                      </CardBox>
                     )
                   })
                 }
