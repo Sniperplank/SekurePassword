@@ -6,6 +6,7 @@ import RecordsList from './pages/RecordsList'
 import RecordDetails from './pages/RecordDetails'
 import { useAuth } from './contexts/AuthContext'
 import { useEffect } from 'react'
+import ForgotPassword from './pages/ForgotPassword'
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<InitialPopup />} />
+      <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='/add' element={<AddRecord />} />
       <Route path='/list' element={<RecordsList />} />
       <Route path='/details' element={<RecordDetails />} />

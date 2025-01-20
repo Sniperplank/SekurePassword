@@ -50,6 +50,10 @@ function InitialPopup() {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    const forgotPassword = () => {
+        navigate('/forgot-password')
+    }
+
     return (
         <CardBox sx={{ minWidth: { xs: 0, sm: 400 } }}>
             <Typography variant='h5' paddingBottom={3}>{isSignup ? 'Sign up' : 'Sign In'}</Typography>
@@ -73,6 +77,10 @@ function InitialPopup() {
                     <StyledButton type='submit' fullWidth variant='contained' color='primary'>
                         {isSignup ? 'Sign Up' : 'Sign In'}
                     </StyledButton>
+                    {
+                        !isSignup &&
+                        <Button onClick={forgotPassword}>Forgot Password</Button>
+                    }
                     <Button onClick={switchMode}>
                         {isSignup ? 'Already have an account? Sign in' : 'Dont have an account? Sign up'}
                     </Button>
