@@ -30,7 +30,7 @@ function RecordDetails() {
 
     const saveChanges = async () => {
         try {
-            await axios.patch('http://localhost:5000/record/', updatedRecord)
+            await axios.patch('https://sekure-password-server.vercel.app/record/', updatedRecord)
             setIsChanged(false)
             initialRecord.current = { ...updatedRecord }
         } catch (error) {
@@ -40,7 +40,7 @@ function RecordDetails() {
 
     const deleteRecord = async () => {
         try {
-            await axios.delete('http://localhost:5000/record?id=' + record._id)
+            await axios.delete('https://sekure-password-server.vercel.app/record?id=' + record._id)
             navigate('/list')
         } catch (error) {
             console.log(error)

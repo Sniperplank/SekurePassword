@@ -19,7 +19,7 @@ function AddRecord() {
     }
 
     const handleAddRecord = async () => {
-        await axios.post('http://localhost:5000/record', recordDetails)
+        await axios.post('https://sekure-password-server.vercel.app/record', recordDetails)
         console.log('record added')
         navigate('/list')
     }

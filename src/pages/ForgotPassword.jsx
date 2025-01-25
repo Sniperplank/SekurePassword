@@ -9,7 +9,7 @@ function ForgotPassword() {
 
     const handlePasswordResetRequest = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/user/forgot-password', { email })
+            const response = await axios.post('https://sekure-password-server.vercel.app/user/forgot-password', { email })
             setMessage(response.data.message)
         } catch (error) {
             setMessage(error.response?.data?.message || 'Something went wrong.')
