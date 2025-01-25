@@ -8,9 +8,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { CardBox } from '../StyledComponents/CardBox';
 import { StyledInput } from '../StyledComponents/StyledInput';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import { useRecords } from '../contexts/RecordsContext';
 
 function RecordsList() {
-  const [records, setRecords] = useState({})
+  const { records, setRecords } = useRecords()
   const { user, setUser } = useAuth()
   const [update, setUpdate] = useState(0)
   const location = useLocation()
@@ -37,6 +38,8 @@ function RecordsList() {
         console.error("Failed to clear profile:", chrome.runtime.lastError.message)
       } else {
         console.log("User profile cleared.")
+        setUser(null)
+        setRecords(null)
         navigate('/')
       }
     })
@@ -109,34 +112,38 @@ function RecordsList() {
       }
 
     } catch (error) {
-      console.error('Error filling credentials:', error);
+      console.error('Error filling credentials:', error)
     }
-  };
+  }
 
-  const filteredRecords = Object.entries(records).filter(record => {
-    return (
-      record[1].title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredRecords = records
+    ? Object.entries(records).filter(([key, value]) =>
+      value.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
-  })
+    : []
 
   const checkMatchingRecords = (url) => {
+    if (!records) {
+      setMatchingRecords([])
+      return
+    }
     const matches = Object.entries(records).filter(([key, value]) => {
-      return url.includes(value.login_url);
-    });
+      return url.includes(value.login_url)
+    })
 
-    setMatchingRecords(matches);
+    setMatchingRecords(matches)
   }
 
   const fetchActiveTabURL = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
-        const activeTabURL = tabs[0].url || '';
-        setCurrentURL(activeTabURL);
-        checkMatchingRecords(activeTabURL);
-        console.log("Active Tab URL:", activeTabURL);
+        const activeTabURL = tabs[0].url || ''
+        setCurrentURL(activeTabURL)
+        checkMatchingRecords(activeTabURL)
+        console.log("Active Tab URL:", activeTabURL)
       }
-    });
-  };
+    })
+  }
 
   // <--------------------------COMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
   // useEffect(() => {
@@ -146,12 +153,24 @@ function RecordsList() {
 
   useEffect(() => {
     async function getRecords() {
-      console.log(user)
-      const records = await axios.get('http://localhost:5000/record?email=' + user?.result.email)
-      setRecords(records.data)
+      if (user && !records) {
+        try {
+          // const response = await axios.get('http://localhost:5000/record?email=' + user?.result.email)
+          const response = await axios.get('https://sekure-password-server.vercel.app/record?email=' + user?.result.email)
+          setRecords(response.data)
+        } catch (error) {
+          if (error.response) {
+            console.error('Error fetching records:', error.response.data);
+          } else if (error.request) {
+            console.error('No response received:', error.request);
+          } else {
+            console.error('Error setting up request:', error.message);
+          }
+        }
+      }
     }
     getRecords()
-  }, [user, update, location])
+  }, [user, records, setRecords])
 
 
   // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
@@ -195,7 +214,7 @@ function RecordsList() {
         <Typography variant='h6' color='primary' textAlign='center'>Your Records</Typography>
         <AddBoxIcon onClick={handleAddRecord} color='primary' fontSize='large' sx={{ cursor: 'pointer' }} />
       </Stack>
-      <StyledInput variant='outlined' label={'Search ' + records.length + ' records by title'} type='search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      <StyledInput variant='outlined' label={`Search ${records ? records.length : 0} records by title`} type='search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       <Typography variant="body2">{matchingRecords.length ? `${matchingRecords.length} matching ${matchingRecords.length > 1 ? 'records' : 'record'} found` : 'No matching records found'}</Typography>
       {
         matchingRecords.length > 0 && (
@@ -204,7 +223,7 @@ function RecordsList() {
               matchingRecords.map(([key, value]) => {
                 return (
                   <CardBox sx={{ paddingTop: 2, paddingBottom: 2, textTransform: 'none' }} key={key}>
-                    <Stack direction='row' spacing={2}>
+                    <Stack direction='row' spacing={2} justifyContent='space-between'>
                       <Typography onClick={() => handleRecordDetails(value)} sx={{ '&:hover': { color: 'primary.main' }, cursor: 'pointer' }}>{value.title.length > 20 ? `${value.title.slice(0, 20)}...` : value.title}</Typography>
                       <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />
                     </Stack>

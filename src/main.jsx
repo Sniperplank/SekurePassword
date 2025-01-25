@@ -6,14 +6,17 @@ import { HashRouter } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './theme'
 import { AuthProvider } from './contexts/AuthContext'
+import { RecordsProvider } from './contexts/RecordsContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HashRouter>
       <AuthProvider>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+        <RecordsProvider>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </RecordsProvider>
       </AuthProvider>
     </HashRouter>
   </StrictMode>,
