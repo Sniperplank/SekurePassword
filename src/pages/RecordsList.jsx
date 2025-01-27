@@ -160,7 +160,7 @@ function RecordsList() {
           setRecords(response.data)
         } catch (error) {
           if (error.response) {
-            console.error('Error fetching records:', error.response.data);
+            console.error('Error fetching records:', error.response.data.message);
           } else if (error.request) {
             console.error('No response received:', error.request);
           } else {
