@@ -7,9 +7,11 @@ import { StyledButton } from '../StyledComponents/StyledButton'
 import { useAuth } from '../contexts/AuthContext'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import { useRecords } from '../contexts/RecordsContext'
 
 function AddRecord() {
     const { user } = useAuth()
+    const { records, setRecords } = useRecords()
     const [recordDetails, setRecordDetails] = useState({ title: '', login: '', password: '', login_url: '', userEmail: user.result.email })
     const navigate = useNavigate()
     const [isHidden, setIsHidden] = useState(true)
@@ -19,13 +21,13 @@ function AddRecord() {
     }
 
     const handleAddRecord = async () => {
-        await axios.post('https://sekure-password-server.vercel.app/record', recordDetails)
-        console.log('record added')
+        await axios.post('https://sekure-password-server.vercel.app/record', { ...recordDetails, encryptedKey: user?.encryptedSecretKey })
+        setRecords(null)
         navigate('/list')
     }
 
     const goBack = async () => {
-        navigate('/list')
+        navigate(-1)
     }
 
     const handleChange = (e) => {
@@ -71,13 +73,13 @@ function AddRecord() {
             <Typography variant='h5' color='primary'>New Record</Typography>
             <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
             <Stack spacing={3}>
-                <StyledInput variant='outlined' name='title' label='Title' onChange={handleChange} />
-                <StyledInput variant='outlined' name='login' label='Login' onChange={handleChange} />
+                <StyledInput variant='outlined' name='title' label='Title' value={recordDetails.title} onChange={handleChange} />
+                <StyledInput variant='outlined' name='login' label='Login' value={recordDetails.login} onChange={handleChange} />
                 <Stack direction='row' spacing={1}>
-                    <StyledInput variant='outlined' name='password' label='Password' onChange={handleChange} type={isHidden ? 'password' : 'text'} sx={{ width: '90%' }} />
+                    <StyledInput variant='outlined' name='password' label='Password' value={recordDetails.password} onChange={handleChange} type={isHidden ? 'password' : 'text'} sx={{ width: '90%' }} />
                     {isHidden ? <VisibilityOffIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} /> : <VisibilityIcon onClick={changeHiddenMode} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />}
                 </Stack>
-                <StyledInput variant='outlined' name='login_url' label='URL' onChange={handleChange} />
+                <StyledInput variant='outlined' name='login_url' label='URL' value={recordDetails.login_url} onChange={handleChange} />
             </Stack>
             <Button onClick={autofillFields} sx={{}}>Generate password and autofill</Button>
             <Stack direction='row' spacing={2} justifyContent='space-evenly'>
