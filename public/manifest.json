@@ -7,7 +7,6 @@
         "default_popup": "index.html"
     },
     "permissions": [
-        "https://sekure-password-server.vercel.app/*",
         "contextMenus",
         "tabs",
         "webNavigation",
