@@ -13,16 +13,11 @@ import { useRecords } from '../contexts/RecordsContext';
 function RecordsList() {
   const { records, setRecords } = useRecords()
   const { user, setUser } = useAuth()
-  const [update, setUpdate] = useState(0)
   const location = useLocation()
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [currentURL, setCurrentURL] = useState('')
   const [matchingRecords, setMatchingRecords] = useState([]) // To store records matching the URL
-
-  const updatePage = () => {
-    setUpdate(prev => prev + 1)
-  }
 
   const handleAddRecord = () => {
     navigate('/add')
@@ -155,8 +150,8 @@ function RecordsList() {
     async function getRecords() {
       if (user && !records) {
         try {
-          // const response = await axios.get('http://localhost:5000/record?email=' + user?.result.email)
-          const response = await axios.get('https://sekure-password-server.vercel.app/record?email=' + user?.result.email)
+          // const response = await axios.get(`http://localhost:5000/record?email=${user?.result.email}&encryptedKey=${encodeURIComponent(user?.encryptedSecretKey)}`)
+          const response = await axios.get(`https://sekure-password-server.vercel.app/record?email=${user?.result.email}&encryptedKey=${encodeURIComponent(user?.encryptedSecretKey)}`)
           setRecords(response.data)
         } catch (error) {
           if (error.response) {
