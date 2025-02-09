@@ -10,3 +10,4 @@
 1. Enable Developer Mode.
 1. Drag the `SekurePassword-master` folder anywhere on the page to import it (do not delete the folder afterwards).
 
+### [Sekure Password Web App](https://sekure-password.vercel.app)
