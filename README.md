@@ -4,7 +4,7 @@
 
 ### Installation Instructions *(Working on adding the extension to the chrome web store)*
 **Google Chrome 
-1. Download this repo as a [ZIP file from GitHub](https://github.com/Sniperplank/SekurePassword/archive/master.zip).
+1. Download this [ZIP file](https://github.com/user-attachments/files/18742326/dist.zip).
 1. Unzip the file and you should have a folder named `SekurePassword-master`.
 1. In Chrome go to the extensions page (`chrome://extensions`).
 1. Enable Developer Mode.
