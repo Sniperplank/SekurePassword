@@ -6,7 +6,7 @@
     "action": {
         "default_popup": "index.html",
         "default_icon": {
-            "16": "./favicon.ico",
+            "16": "./lock-icon-16px.png",
             "32": "./lock-icon-32px.png",
             "48": "./lock-icon-48px.png",
             "128": "./lock-icon-128px.png"
@@ -22,7 +22,7 @@
         "scripting"
     ],
     "icons": {
-        "16": "./favicon.ico",
+        "16": "./lock-icon-16px.png",
         "32": "./lock-icon-32px.png",
         "48": "./lock-icon-48px.png",
         "128": "./lock-icon-128px.png"
