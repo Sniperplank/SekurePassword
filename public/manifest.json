@@ -4,16 +4,27 @@
     "version": "1.0",
     "manifest_version": 3,
     "action": {
-        "default_popup": "index.html"
+        "default_popup": "index.html",
+        "default_icon": {
+            "16": "./favicon.ico",
+            "32": "./lock-icon-32px.png",
+            "48": "./lock-icon-48px.png",
+            "128": "./lock-icon-128px.png"
+        }
     },
     "permissions": [
         "contextMenus",
         "tabs",
         "webNavigation",
-        "activeTab",
-        "alarms",
+        "activeTab", 
         "clipboardWrite",
         "storage",
         "scripting"
-    ]
+    ],
+    "icons": {
+        "16": "./favicon.ico",
+        "32": "./lock-icon-32px.png",
+        "48": "./lock-icon-48px.png",
+        "128": "./lock-icon-128px.png"
+    }
 }
