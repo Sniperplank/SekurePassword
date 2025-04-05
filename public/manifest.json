@@ -13,10 +13,7 @@
         }
     },
     "permissions": [
-        "contextMenus",
         "tabs",
-        "webNavigation",
-        "activeTab", 
         "clipboardWrite",
         "storage",
         "scripting"
