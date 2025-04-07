@@ -1,6 +1,6 @@
 {
     "name": "Sekure Password",
-    "description": "Manage passwords online",
+    "description": "Store and manage your passwords. Sign into sites quicker with the autofill feature.",
     "version": "1.0",
     "manifest_version": 3,
     "action": {
@@ -16,7 +16,8 @@
         "tabs",
         "clipboardWrite",
         "storage",
-        "scripting"
+        "scripting",
+        "activeTab"
     ],
     "icons": {
         "16": "./lock-icon-16px.png",
