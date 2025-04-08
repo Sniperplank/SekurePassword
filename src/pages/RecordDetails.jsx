@@ -8,6 +8,7 @@ import { StyledButton } from '../StyledComponents/StyledButton'
 import axios from 'axios'
 import { useRecords } from '../contexts/RecordsContext'
 import { useAuth } from '../contexts/AuthContext'
+import ConfirmDeleteModal from '../modals/ConfirmDeleteModal'
 
 function RecordDetails() {
     const { user } = useAuth()
@@ -19,6 +20,7 @@ function RecordDetails() {
     const [isChanged, setIsChanged] = useState(false)
     const navigate = useNavigate()
     const initialRecord = useRef({ ...record })
+    const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
 
     const changeHiddenMode = () => {
         setIsHidden(prev => !prev)
@@ -151,8 +153,9 @@ function RecordDetails() {
                 )
             }
             <StyledButton variant='contained' onClick={fillCredentials}>Autofill Record</StyledButton>
-            <Button onClick={deleteRecord} sx={{ width: '50%', alignSelf: 'center' }} color='error'>Delete</Button>
+            <Button onClick={() => setIsConfirmDeleteModalOpen(true)} sx={{ width: '50%', alignSelf: 'center' }} color='error'>Delete</Button>
             <Button onClick={goBack} sx={{ width: '50%', alignSelf: 'center' }}>Back</Button>
+            <ConfirmDeleteModal open={isConfirmDeleteModalOpen} onClose={() => setIsConfirmDeleteModalOpen(false)} deleteRecord={deleteRecord} />
         </Stack>
     )
 }
