@@ -9,6 +9,7 @@ import { CardBox } from '../StyledComponents/CardBox';
 import { StyledInput } from '../StyledComponents/StyledInput';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useRecords } from '../contexts/RecordsContext';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 function RecordsList() {
   const { records, setRecords } = useRecords()
@@ -198,10 +199,17 @@ function RecordsList() {
     };
   }, [records, location, currentURL]) // Re-run when records are updated
 
+  const goToWebSite = () => {
+    chrome.tabs.create({ url: "https://sekure-password.vercel.app/" })
+  }
+
   return (
     <Stack spacing={4}>
-      <Stack direction='row' justifyContent='space-between'>
-        <Typography variant='h6' color='primary'>{user?.result.name}</Typography>
+      <Stack direction='row' justifyContent='space-between' sx={{ alignItems: 'center' }}>
+        <Stack direction='row' spacing={2} onClick={goToWebSite} sx={{ ":hover": { cursor: 'pointer' }, alignItems: 'center' }}>
+          <Typography variant='h6' color='primary' >{user?.result.name}</Typography>
+          <OpenInNewIcon color='primary' fontSize='medium' />
+        </Stack>
         <LogoutIcon onClick={logout} color='error' fontSize='medium' sx={{ cursor: 'pointer' }} />
       </Stack>
       <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
