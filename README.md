@@ -4,7 +4,7 @@
 
 ### Installation Instructions *(Working on adding the extension to the chrome web store)*
 **Google Chrome 
-1. Download this [ZIP file](https://github.com/user-attachments/files/18742326/dist.zip).
+1. Download this [ZIP file](https://github.com/user-attachments/files/19697577/dist.zip).
 1. Unzip the file and you should have a folder named `dist`.
 1. In Chrome go to the extensions page (`chrome://extensions`).
 1. Enable Developer Mode.
