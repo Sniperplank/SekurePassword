@@ -48,7 +48,7 @@ function RecordDetails() {
 
     const deleteRecord = async () => {
         try {
-            await axios.delete('https://sekure-password-server.vercel.app/record?id=' + record._id)
+            await axios.delete('https://sekure-password-server.vercel.app/record/', { data: { record: record, encryptedKey: user?.encryptedSecretKey } })
             setRecords(null)
             navigate('/list')
         } catch (error) {
