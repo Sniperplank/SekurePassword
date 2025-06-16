@@ -2,10 +2,12 @@ import { Button, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { StyledInput } from '../StyledComponents/StyledInput'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function ForgotPassword() {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
     const handlePasswordResetRequest = async () => {
         try {
@@ -22,6 +24,7 @@ function ForgotPassword() {
             <Typography variant="body1">Enter your e-mail to reset your password</Typography>
             <StyledInput variant="outlined" label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <Button variant="contained" color="primary" onClick={handlePasswordResetRequest}>Send Reset Link</Button>
+            <Button onClick={() => { navigate(-1) }} >Back</Button>
             {message && <Typography variant="body2">{message}</Typography>}
         </Stack>
     )
