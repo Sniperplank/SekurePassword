@@ -26,16 +26,35 @@ function InitialPopup() {
 
     // Check for existing user
     useEffect(() => {
-        const checkIfUserLoggedin = async () => {
-            try {
-                const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
-                setUser(res.data.user)
-                navigate('/list')
-            } catch (err) {
-                console.log('User not logged in: ', err)
-            }
+        const checkIfUserLoggedIn = async () => {
+            chrome.storage.local.get('profile', async (result) => {
+                if (result.profile) {
+                    console.log('User already logged in:', result.profile)
+                    setUser(result.profile)
+                    navigate('/list')
+                } else {
+                    try {
+                        const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+                        const userProfile = res.data.user
+                        chrome.storage.local.set({ profile: userProfile }, () => {
+                            if (chrome.runtime.lastError) {
+                                console.error("Error saving profile:", chrome.runtime.lastError.message)
+                                setError("Failed to save user data.")
+                                return
+                            }
+
+                            console.log("User profile saved.")
+                            setUser(userProfile)
+                            navigate('/list')
+                        })
+                    } catch (err) {
+                        console.log('User not logged in:', err.response?.data?.message || err.message)
+                    }
+                }
+            })
         }
-        checkIfUserLoggedin()
+
+        checkIfUserLoggedIn()
     }, [navigate])
 
     const switchMode = () => {
@@ -45,9 +64,9 @@ function InitialPopup() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (isSignup) {
-            signup(formData, navigate, setError)
+            signup(formData, navigate, setError, setUser)
         } else {
-            signin(formData, navigate, setError)
+            signin(formData, navigate, setError, setUser)
         }
     }
 

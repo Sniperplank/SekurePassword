@@ -13,7 +13,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 function RecordsList() {
   const { records, setRecords } = useRecords()
-  const { user, setUser } = useAuth()
+  const { user, setUser, loading } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
@@ -31,6 +31,13 @@ function RecordsList() {
   const logout = async () => {
     try {
       await axios.post('https://sekure-password-server.vercel.app/user/logout', {}, { withCredentials: true })
+      chrome.storage.local.remove('profile', () => {
+        if (chrome.runtime.lastError) {
+          console.error("Error removing profile:", chrome.runtime.lastError.message)
+          return
+        }
+        console.log("User profile removed from storage.")
+      })
       setUser(null)
       setRecords(null)
       navigate('/')
@@ -141,24 +148,24 @@ function RecordsList() {
 
   useEffect(() => {
     async function getRecords() {
-      if (user && !records) {
-        try {
-          // const response = await axios.get(`http://localhost:5000/record?email=${user?.result.email}&encryptedKey=${encodeURIComponent(user?.encryptedSecretKey)}`)
-          const response = await axios.get(`https://sekure-password-server.vercel.app/record`, { withCredentials: true })
-          setRecords(response.data)
-        } catch (error) {
-          if (error.response) {
-            console.error('Error fetching records:', error.response.data.message);
-          } else if (error.request) {
-            console.error('No response received:', error.request);
-          } else {
-            console.error('Error setting up request:', error.message);
-          }
+      if (!user || loading || records) return
+
+      try {
+        const response = await axios.get('https://sekure-password-server.vercel.app/record', { withCredentials: true })
+        setRecords(response.data)
+      } catch (error) {
+        if (error.response) {
+          console.error('Error fetching records:', error.response.data.message)
+        } else if (error.request) {
+          console.error('No response received:', error.request)
+        } else {
+          console.error('Error setting up request:', error.message)
         }
       }
     }
+
     getRecords()
-  }, [user, records, setRecords])
+  }, [user, loading, records, setRecords])
 
   useEffect(() => {
     const token = user?.token
