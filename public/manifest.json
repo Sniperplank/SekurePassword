@@ -6,10 +6,10 @@
     "action": {
         "default_popup": "index.html",
         "default_icon": {
-            "16": "./lock-icon-16px.png",
-            "32": "./lock-icon-32px.png",
-            "48": "./lock-icon-48px.png",
-            "128": "./lock-icon-128px.png"
+            "16": "lock-icon-16px.png",
+            "32": "lock-icon-32px.png",
+            "48": "lock-icon-48px.png",
+            "128": "lock-icon-128px.png"
         }
     },
     "permissions": [
@@ -19,9 +19,9 @@
         "activeTab"
     ],
     "icons": {
-        "16": "./lock-icon-16px.png",
-        "32": "./lock-icon-32px.png",
-        "48": "./lock-icon-48px.png",
-        "128": "./lock-icon-128px.png"
+        "16": "lock-icon-16px.png",
+        "32": "lock-icon-32px.png",
+        "48": "lock-icon-48px.png",
+        "128": "lock-icon-128px.png"
     }
 }
