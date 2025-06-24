@@ -28,17 +28,15 @@ function RecordsList() {
     navigate('/details', { state: { record: record } })
   }
 
-  const logout = () => {
-    chrome.storage.local.remove('profile', () => {
-      if (chrome.runtime.lastError) {
-        console.error("Failed to clear profile:", chrome.runtime.lastError.message)
-      } else {
-        console.log("User profile cleared.")
-        setUser(null)
-        setRecords(null)
-        navigate('/')
-      }
-    })
+  const logout = async () => {
+    try {
+      await axios.post('https://sekure-password-server.vercel.app/user/logout', {}, { withCredentials: true })
+      setUser(null)
+      setRecords(null)
+      navigate('/')
+    } catch (err) {
+      console.error('Logout failed:', err)
+    }
   }
 
   // Function to inject into the page to handle password fields
@@ -141,18 +139,12 @@ function RecordsList() {
     })
   }
 
-  // <--------------------------COMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
-  // useEffect(() => {
-  //   setUser(JSON.parse(localStorage.getItem('profile')))
-  // }, [])
-
-
   useEffect(() => {
     async function getRecords() {
       if (user && !records) {
         try {
           // const response = await axios.get(`http://localhost:5000/record?email=${user?.result.email}&encryptedKey=${encodeURIComponent(user?.encryptedSecretKey)}`)
-          const response = await axios.get(`https://sekure-password-server.vercel.app/record?email=${user?.result.email}&encryptedKey=${encodeURIComponent(user?.encryptedSecretKey)}`)
+          const response = await axios.get(`https://sekure-password-server.vercel.app/record`, { withCredentials: true })
           setRecords(response.data)
         } catch (error) {
           if (error.response) {
@@ -168,8 +160,13 @@ function RecordsList() {
     getRecords()
   }, [user, records, setRecords])
 
-
-  // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
+  useEffect(() => {
+    const token = user?.token
+    if (token) {
+      const decodedToken = jwtDecode(token)
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout()
+    }
+  }, [user, logout])
 
   // Monitor active URL changes
   useEffect(() => {
@@ -207,7 +204,7 @@ function RecordsList() {
     <Stack spacing={4}>
       <Stack direction='row' justifyContent='space-between' sx={{ alignItems: 'center' }}>
         <Stack direction='row' spacing={2} onClick={goToWebSite} sx={{ ":hover": { cursor: 'pointer' }, alignItems: 'center' }}>
-          <Typography variant='h6' color='primary' >{user?.result.name}</Typography>
+          <Typography variant='h6' color='primary' >{user?.name}</Typography>
           <OpenInNewIcon color='primary' fontSize='medium' />
         </Stack>
         <LogoutIcon onClick={logout} color='error' fontSize='medium' sx={{ cursor: 'pointer' }} />

@@ -36,7 +36,7 @@ function RecordDetails() {
 
     const saveChanges = async () => {
         try {
-            await axios.patch('https://sekure-password-server.vercel.app/record/', { record: updatedRecord, encryptedKey: user?.encryptedSecretKey })
+            await axios.patch('https://sekure-password-server.vercel.app/record/', { record: updatedRecord })
             setIsChanged(false)
             setRecords(null)
             navigate(-1)
@@ -48,7 +48,7 @@ function RecordDetails() {
 
     const deleteRecord = async () => {
         try {
-            await axios.delete('https://sekure-password-server.vercel.app/record/', { data: { record: record, encryptedKey: user?.encryptedSecretKey } })
+            await axios.delete('https://sekure-password-server.vercel.app/record/', { data: { record: record } })
             setRecords(null)
             navigate('/list')
         } catch (error) {

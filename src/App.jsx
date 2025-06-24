@@ -14,16 +14,15 @@ function App() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
-  useEffect(() => {
-    chrome.storage.local.get("profile", (result) => {
-      if (chrome.runtime.lastError) {
-        console.error('Failed to fetch profile:', chrome.runtime.lastError.message)
-      } else {
-        setUser(result.profile || null)
-      }
-    })
-  }, [location])
+  // useEffect(() => {
+  //   chrome.storage.local.get("profile", (result) => {
+  //     if (chrome.runtime.lastError) {
+  //       console.error('Failed to fetch profile:', chrome.runtime.lastError.message)
+  //     } else {
+  //       setUser(result.profile || null)
+  //     }
+  //   })
+  // }, [location])
 
   return (
     <Routes>

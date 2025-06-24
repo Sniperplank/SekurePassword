@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext()
@@ -7,30 +8,34 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-
-    // <--------------------------COMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
-    // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
-
     const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        chrome.storage.local.get("profile", (result) => {
-            if (chrome.runtime.lastError) {
-                console.error('Failed to fetch profile:', chrome.runtime.lastError.message)
-            } else {
-                setUser(result.profile || null)
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+                setUser(res.data.user)
+            } catch (err) {
+                console.warn('User not authenticated:', err)
+                setUser(null)
+            } finally {
+                setLoading(false)
             }
-        })
+        }
+
+        fetchUser()
     }, [])
 
     const value = {
         user,
-        setUser
+        setUser,
+        loading
     }
 
     return (
         <AuthContext.Provider value={value}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     )
 }

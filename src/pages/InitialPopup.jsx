@@ -7,10 +7,13 @@ import { StyledInput } from '../StyledComponents/StyledInput'
 import { signin, signup } from '../actions/auth'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext'
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 
 function InitialPopup() {
+    const { user, setUser } = useAuth()
     const [isSignup, setIsSignup] = useState(false)
     const [formData, setFormData] = useState(initialState)
     const [isHidden, setIsHidden] = useState(true)
@@ -21,16 +24,18 @@ function InitialPopup() {
         setIsHidden(prev => !prev)
     }
 
-    // <--------------------------UNCOMMENT WHEN READY FOR BUILD ------------------------------------------------------------------------------------->
-
-    // Check for existing user profile on component mount
+    // Check for existing user
     useEffect(() => {
-        chrome.storage.local.get('profile', (result) => {
-            if (result.profile) {
-                console.log('User already logged in:', result.profile)
-                navigate('/list') // Navigate to the /list page
+        const checkIfUserLoggedin = async () => {
+            try {
+                const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+                setUser(res.data.user)
+                navigate('/list')
+            } catch (err) {
+                console.log('User not logged in: ', err)
             }
-        })
+        }
+        checkIfUserLoggedin()
     }, [navigate])
 
     const switchMode = () => {
