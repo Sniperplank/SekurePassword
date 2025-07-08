@@ -153,7 +153,9 @@ function RecordDetails() {
                     </Stack>
                 )
             }
-            <StyledButton variant='contained' onClick={fillCredentials}>Autofill Record</StyledButton>
+            {user?.subscription.status === "premium"
+                ? <StyledButton variant='contained' onClick={fillCredentials}>Autofill Record</StyledButton>
+                : <Typography variant='h6' color='primary'>Upgrade plan to autofill your passwords</Typography>}
             <Button onClick={() => setIsConfirmDeleteModalOpen(true)} sx={{ width: '50%', alignSelf: 'center' }} color='error'>Delete</Button>
             <Button onClick={goBack} sx={{ width: '50%', alignSelf: 'center' }}>Back</Button>
             <ConfirmDeleteModal open={isConfirmDeleteModalOpen} onClose={() => setIsConfirmDeleteModalOpen(false)} deleteRecord={deleteRecord} />

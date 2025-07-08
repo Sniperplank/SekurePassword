@@ -218,6 +218,16 @@ function RecordsList() {
         <LogoutIcon onClick={logout} color='error' fontSize='medium' sx={{ cursor: 'pointer' }} />
       </Stack>
       <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
+      {user?.subscription.status === "free" &&
+        <>
+          <Stack direction='row' justifyContent='space-between'>
+            <Typography variant='h6' color='error'>Upgrade your account to unlock all features</Typography>
+            <Box className='premiumCard' sx={{ width: 200, height: 50, borderRadius: 15, justifySelf: 'center', alignContent: 'center', background: 'linear-gradient(to left bottom, #32376f, #31396f, #313b6f, #313d6f, #313f6f, #384b78, #3f5681, #48628a, #5b7a9d, #7293b1, #8aacc4, #a5c5d7)' }}>
+              <Button sx={{ width: '100%', height: '100%', fontWeight: 'bold', textShadow: '2px 2px #32376f' }} onClick={goToWebSite}>Upgrade Plan</Button>
+            </Box>
+          </Stack>
+          <Divider sx={{ backgroundColor: 'primary.main' }}></Divider>
+        </>}
       <Stack direction='row' justifyContent='space-between'>
         <Typography variant='h6' color='primary' textAlign='center'>Your Records</Typography>
         <AddBoxIcon onClick={handleAddRecord} color='primary' fontSize='large' sx={{ cursor: 'pointer' }} />
@@ -233,7 +243,7 @@ function RecordsList() {
                   <CardBox sx={{ paddingTop: 2, paddingBottom: 2, textTransform: 'none' }} key={key}>
                     <Stack direction='row' spacing={2} justifyContent='space-between'>
                       <Typography onClick={() => handleRecordDetails(value)} sx={{ '&:hover': { color: 'primary.main' }, cursor: 'pointer' }}>{value.title.length > 20 ? `${value.title.slice(0, 20)}...` : value.title}</Typography>
-                      <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />
+                      {user?.subscription.status === "premium" && <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />}
                     </Stack>
                   </CardBox>
                 )
@@ -256,7 +266,7 @@ function RecordsList() {
                       <CardBox sx={{ paddingTop: 2, paddingBottom: 2, textTransform: 'none' }} key={key}>
                         <Stack direction='row' spacing={2} justifyContent='space-between'>
                           <Typography onClick={() => handleRecordDetails(value)} sx={{ '&:hover': { color: 'primary.main' }, cursor: 'pointer' }}>{value.title.length > 20 ? `${value.title.slice(0, 20)}...` : value.title}</Typography>
-                          <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />
+                          {user?.subscription.status === "premium" && <EditNoteIcon onClick={() => fillCredentials(value)} color='primary' sx={{ alignSelf: 'center', cursor: 'pointer' }} />}
                         </Stack>
                       </CardBox>
                     )

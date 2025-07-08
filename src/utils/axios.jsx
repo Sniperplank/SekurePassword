@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const isLocalhost = true // change this based on environment
+const isLocalhost = false // change this based on environment
 
 const api = axios.create({
     baseURL: isLocalhost

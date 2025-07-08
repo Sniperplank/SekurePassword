@@ -25,29 +25,28 @@ function InitialPopup() {
         setIsHidden(prev => !prev)
     }
 
+    const checkIfUserLoggedIn = async () => {
+        try {
+            const res = await api.get('/user/me', { withCredentials: true })
+            const userProfile = res.data.user
+            chrome.storage.local.set({ profile: userProfile }, () => {
+                if (chrome.runtime.lastError) {
+                    console.error("Error saving profile:", chrome.runtime.lastError.message)
+                    setError("Failed to save user data.")
+                    return
+                }
+
+                console.log("User profile saved.")
+                setUser(userProfile)
+                navigate('/list')
+            })
+        } catch (err) {
+            console.log('User not logged in:', err.response?.data?.message || err.message)
+        }
+    }
+
     // Check for existing user
     useEffect(() => {
-        const checkIfUserLoggedIn = async () => {
-            try {
-                const res = await api.get('/user/me', { withCredentials: true })
-                const userProfile = res.data.user
-                chrome.storage.local.set({ profile: userProfile }, () => {
-                    if (chrome.runtime.lastError) {
-                        console.error("Error saving profile:", chrome.runtime.lastError.message)
-                        setError("Failed to save user data.")
-                        return
-                    }
-
-                    console.log("User profile saved.")
-                    setUser(userProfile)
-                    navigate('/list')
-                })
-            } catch (err) {
-                console.log('User not logged in:', err.response?.data?.message || err.message)
-            }
-        }
-
-
         chrome.storage.local.get('profile', (result) => {
             if (result.profile) {
                 console.log('User already logged in:', result.profile)
