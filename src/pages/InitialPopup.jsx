@@ -9,6 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
+import api from '../utils/axios'
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 
@@ -28,7 +29,7 @@ function InitialPopup() {
     useEffect(() => {
         const checkIfUserLoggedIn = async () => {
             try {
-                const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+                const res = await api.get('/user/me', { withCredentials: true })
                 const userProfile = res.data.user
                 chrome.storage.local.set({ profile: userProfile }, () => {
                     if (chrome.runtime.lastError) {

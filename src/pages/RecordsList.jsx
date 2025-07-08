@@ -10,6 +10,7 @@ import { StyledInput } from '../StyledComponents/StyledInput';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useRecords } from '../contexts/RecordsContext';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import api from '../utils/axios';
 
 function RecordsList() {
   const { records, setRecords } = useRecords()
@@ -30,7 +31,7 @@ function RecordsList() {
 
   const logout = async () => {
     try {
-      await axios.post('https://sekure-password-server.vercel.app/user/logout', {}, { withCredentials: true })
+      await api.post('/user/logout', {}, { withCredentials: true })
       chrome.storage.local.remove('profile', () => {
         if (chrome.runtime.lastError) {
           console.error("Error removing profile:", chrome.runtime.lastError.message)
@@ -151,7 +152,7 @@ function RecordsList() {
       if (!user || loading || records) return
 
       try {
-        const response = await axios.get('https://sekure-password-server.vercel.app/record', { withCredentials: true })
+        const response = await api.get('/record', { withCredentials: true })
         setRecords(response.data)
       } catch (error) {
         if (error.response) {

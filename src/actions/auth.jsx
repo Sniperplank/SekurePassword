@@ -1,11 +1,12 @@
 import axios from 'axios'
+import api from '../utils/axios'
 
 axios.defaults.withCredentials = true
 
 export const signin = async (formData, navigate, setError, setUser) => {
     try {
-        await axios.post('https://sekure-password-server.vercel.app/user/signin', formData, { withCredentials: true })
-        const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+        await api.post('/user/signin', formData, { withCredentials: true })
+        const res = await api.get('/user/me', { withCredentials: true })
 
         const userProfile = res.data.user
 
@@ -28,8 +29,8 @@ export const signin = async (formData, navigate, setError, setUser) => {
 
 export const signup = async (formData, navigate, setError, setUser) => {
     try {
-        await axios.post('https://sekure-password-server.vercel.app/user/signup', formData, { withCredentials: true })
-        const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+        await api.post('/user/signup', formData, { withCredentials: true })
+        const res = await api.get('/user/me', { withCredentials: true })
 
         const userProfile = res.data.user
 

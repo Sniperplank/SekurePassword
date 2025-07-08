@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import api from '../utils/axios'
 
 const AuthContext = createContext()
 
@@ -14,7 +15,7 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get('https://sekure-password-server.vercel.app/user/me', { withCredentials: true })
+                const res = await api.get('/user/me', { withCredentials: true })
                 setUser(res.data.user)
             } catch (err) {
                 console.warn('User not authenticated:', err)
