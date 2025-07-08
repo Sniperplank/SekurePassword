@@ -205,7 +205,7 @@ function RecordsList() {
   }, [records, location, currentURL]) // Re-run when records are updated
 
   const goToWebSite = () => {
-    chrome.tabs.create({ url: "https://sekure-password.vercel.app/" })
+    chrome.tabs.create({ url: "https://sekure-password.vercel.app/#/profile" })
   }
 
   return (
