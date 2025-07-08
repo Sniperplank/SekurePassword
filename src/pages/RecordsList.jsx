@@ -167,13 +167,13 @@ function RecordsList() {
     getRecords()
   }, [user, loading, records, setRecords])
 
-  useEffect(() => {
-    const token = user?.token
-    if (token) {
-      const decodedToken = jwtDecode(token)
-      if (decodedToken.exp * 1000 < new Date().getTime()) logout()
-    }
-  }, [user, logout])
+  // useEffect(() => {
+  //   const token = user?.token
+  //   if (token) {
+  //     const decodedToken = jwtDecode(token)
+  //     if (decodedToken.exp * 1000 < new Date().getTime()) logout()
+  //   }
+  // }, [user, logout])
 
   // Monitor active URL changes
   useEffect(() => {

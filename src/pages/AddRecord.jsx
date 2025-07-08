@@ -21,7 +21,7 @@ function AddRecord() {
     }
 
     const handleAddRecord = async () => {
-        await axios.post('https://sekure-password-server.vercel.app/record', { recordDetails }, { withCredentials: true })
+        await axios.post('https://sekure-password-server.vercel.app/record', recordDetails, { withCredentials: true })
         setRecords(null)
         navigate('/list')
     }
@@ -56,7 +56,7 @@ function AddRecord() {
                 setRecordDetails((prevDetails) => ({
                     ...prevDetails,
                     title: title,
-                    login: user.result.email,
+                    login: user.email,
                     password: generatedPassword,
                     login_url: url,
                 }))
